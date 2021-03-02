@@ -1,25 +1,37 @@
+// Dependencies
 const express = require("express");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
-const middlewares = require("./middlewares");
 
+// Required local libraries
+const middlewares = require("./middlewares");
+const logs = require("./api/logs");
+const connectDB = require("./config/database");
+
+// Initiate app
 const app = express();
+
+// Connect to database
+connectDB();
 
 // Middlewares
 app.use(morgan("common"));
 app.use(helmet());
 app.use(
     cors({
-        origin: "http://localhost:3000",
+        origin: process.env.CORS_ORIGIN,
     })
 );
+app.use(express.json());
 
 app.get("/", (req, res) => {
     res.json({
         message: "Hello World!",
     });
 });
+
+app.use("/api/logs", logs);
 
 // Error handling middleware
 app.use(middlewares.notFound);
