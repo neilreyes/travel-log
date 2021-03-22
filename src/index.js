@@ -16,13 +16,19 @@ const app = express();
 connectDB();
 
 // Middlewares
+/* app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+}); */
 app.use(morgan("common"));
 app.use(helmet());
-app.use(
-    cors({
-        origin: process.env.CORS_ORIGIN,
-    })
-);
+
+// app.use(cors());
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
